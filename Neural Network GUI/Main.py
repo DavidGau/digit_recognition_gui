@@ -5,50 +5,6 @@ import NeuralNetwork
 import random
 import Graphique
 import pylab as plt
-#Création du Neural Network
-digit_network = NeuralNetwork.NeuralNetwork()
-
-
-#Ouverture des donnée MNIST
-mndata = MNIST("./")
-
-image_training, label_training = mndata.load_training()
-image_testing, label_testing = mndata.load_testing()
-
-#randomize le training set
-label_training = list(label_training)
-randomize = list(zip(image_training,label_training))
-random.shuffle(randomize)
-image_training[:], label_training[:] = zip(*randomize)
-print(len(label_training))
-#randomize le test set
-label_testing = list(label_testing)
-randomize = list(zip(image_testing,label_testing))
-random.shuffle(randomize)
-image_testing[:], label_testing[:] = zip(*randomize)
-
-index_testing = 0
-nb_erreur = 0
-total_training = 0
-#Détection du clique sur le canvas
-def onclick(event):
-    global total_training
-
-    if event.button == 1: #Clique pour guess
-        global nb_erreur
-        nb_erreur = 0
-        canvas.clear_test()
-        global index_testing
-        for i in range(0,100):
-            testing()
-    elif event.button == 3: #Clique pour train
-        training()
-        canvas.show_train()
-#Affichage graphique vite fait pour démontrer le fonctionnement du nn
-fig = plt.figure()
-fig.canvas.mpl_connect('button_press_event', onclick)
-canvas = Graphique.Graphique(fig,image_testing[0])
-fig.show()
 
 
 
@@ -105,4 +61,54 @@ def testing():
 
     canvas.update_stats(reponse[0],reponse[0],reponse[1],reponse[1],reponse[2],total_training)
     index_testing += 1
+
+#Création du Neural Network
+digit_network = NeuralNetwork.NeuralNetwork()
+
+
+#Ouverture des donnée MNIST
+mndata = MNIST("./")
+
+image_training, label_training = mndata.load_training()
+image_testing, label_testing = mndata.load_testing()
+
+#randomize le training set
+label_training = list(label_training)
+randomize = list(zip(image_training,label_training))
+random.shuffle(randomize)
+image_training[:], label_training[:] = zip(*randomize)
+print(len(label_training))
+#randomize le test set
+label_testing = list(label_testing)
+randomize = list(zip(image_testing,label_testing))
+random.shuffle(randomize)
+image_testing[:], label_testing[:] = zip(*randomize)
+
+index_testing = 0
+nb_erreur = 0
+total_training = 0
+#Détection du clique sur le canvas
+def onclick(event):
+    global total_training
+
+    if event.button == 1: #Clique pour guess
+        global nb_erreur
+        nb_erreur = 0
+        canvas.clear_test()
+        global index_testing
+        for i in range(0,100):
+            testing()
+    elif event.button == 3: #Clique pour train
+        training()
+        canvas.show_train()
+#Affichage graphique vite fait pour démontrer le fonctionnement du nn
+fig = plt.figure()
+fig.canvas.mpl_connect('button_press_event', onclick)
+canvas = Graphique.Graphique(fig,image_testing[0])
+plt.show()
+
+
+
+
+
 
